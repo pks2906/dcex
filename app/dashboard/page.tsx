@@ -1,45 +1,44 @@
-"use client";
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation";
 
-export default function() {
-    const session = useSession();
-    const router = useRouter();
+import { getServerSession } from "next-auth";
+import { ProfileCard } from "../components/ProfileCard";
+import db from "@/app/db";
+import { authConfig } from "../lib/auth";
 
-    if (session.status === "loading") {
-        //TODO: replace with a skeleton 
-        return <div>
-            Loading...
-        </div>
+
+async function getUserWallet(){
+    const session= await getServerSession(authConfig);
+
+
+    const userWallet = await db.solWallet.findFirst({
+        where:{
+            userId: session?.user?.uid
+        }, 
+        select: {
+            publicKey: true
+        }
+    })
+    if (!userWallet){
+        return {
+            error: "No solana wallet found associated to the user   "
+        }
     }
 
-    if (!session.data?.user){
-        router.push("/")
-        return null
+    return {error: null, userWallet};
 
-    }
-    return <div className="pt-8 flex justify-center">
-        <div className="max-w-4xl bg-white rounded shadow w-full p-12">
-            <Greeting
-                image={session.data?.user?.image ?? ""} 
-                name={session.data?.user?.name ?? ""} 
-             />
-
-
-        </div>
-        
-    </div>
 }
 
-function Greeting({
-    image, name
-}: {
-    image: string, name: string
-}) {
-    return <div className="flex">
-        <img src={image} className="rounded-full w-14 h-14 mr-4" />
-        <div className="text-2xl font-semibold flex flex-col justify-center">
-            Welcome back, {name}
-        </div>
+
+
+export default async function() {
+    const userWallet = await getUserWallet();
+
+    if (userWallet.error || !userWallet?.userWallet?.publicKey){
+        return <>No solana wallet found</>
+
+    }
+
+    return <div>
+        <ProfileCard publicKey = {userWallet.userWallet?.publicKey} />
     </div>
+
 }
