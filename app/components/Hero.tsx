@@ -1,8 +1,11 @@
 "use client";
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import { SecondaryButton } from "./Button"
+import { useRouter } from "next/navigation";
 
 export const Hero = () => {
+    const session = useSession();
+    const router = useRouter();
     return <div>
         <div className="text-5xl font-medium">
             <span>
@@ -20,9 +23,11 @@ export const Hero = () => {
             Convert your INR into Cryptocurrency
         </div>
         <div className="pt-8 flex justify-center">
-            <SecondaryButton onClick={() => {
+            {session.data?.user ?<SecondaryButton onClick={() => {
+                router.push("/dashboard");   
+            }}>Go to Dashboard</SecondaryButton> : <SecondaryButton onClick={() => {
                 signIn("google");
-            }}>Login with Google</SecondaryButton>
+            }}>Login with Google</SecondaryButton>}
         </div>
     </div>
 }
