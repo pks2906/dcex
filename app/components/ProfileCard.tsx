@@ -9,18 +9,18 @@ import { TokenList } from "./TokenList";
 import { Swap } from "./Swap";
 
 type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
-const tabs: {id: Tab; name: string}[] = [
-    {id: "tokens", name: "Tokens"}, 
-    {id: "send", name: "Send"}, 
-    {id: "add_funds", name: "Add funds"},
-    {id: "withdraw", name: "Withdraw"},
-    {id: "swap", name: "Swap"},
+const tabs: { id: Tab; name: string }[] = [
+    { id: "tokens", name: "Tokens" },
+    { id: "send", name: "Send" },
+    { id: "add_funds", name: "Add funds" },
+    { id: "withdraw", name: "Withdraw" },
+    { id: "swap", name: "Swap" },
 ];
 
-export const ProfileCard = ({publicKey}: {  
+export const ProfileCard = ({ publicKey }: {
     publicKey: string
-}) => {     
-    const session = useSession(); 
+}) => {
+    const session = useSession();
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState<Tab>("tokens");
 
@@ -31,7 +31,7 @@ export const ProfileCard = ({publicKey}: {
         </div>
     }
 
-    if (!session.data?.user){
+    if (!session.data?.user) {
         router.push("/")
         return null
 
@@ -39,36 +39,36 @@ export const ProfileCard = ({publicKey}: {
     return <div className="pt-8 flex justify-center">
         <div className="max-w-4xl bg-white rounded shadow w-full">
             <Greeting
-                image={session.data?.user?.image ?? ""} 
-                name={session.data?.user?.name ?? ""} 
-             />
-             <div className="w-full flex px-10">  
-                {tabs.map(tab => <TabButton active={tab.id === selectedTab}  onClick={() => {
+                image={session.data?.user?.image ?? ""}
+                name={session.data?.user?.name ?? ""}
+            />
+            <div className="w-full flex px-10">
+                {tabs.map(tab => <TabButton active={tab.id === selectedTab} onClick={() => {
                     setSelectedTab(tab.id)
                 }}>{tab.name}</TabButton>)}
-             </div>
+            </div>
 
 
-             <div className={`${selectedTab ==="tokens" ? "visible" : "hidden"}`}><Assets publicKey={publicKey}/></div>
-             <div className={`${selectedTab ==="swap" ? "visible" : "hidden"}`}><Swap publicKey={publicKey}/></div>
+            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}><Assets publicKey={publicKey} /></div>
+            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap publicKey={publicKey} /></div>
 
 
         </div>
-        
+
     </div>
 }
 
-function Assets({publicKey}: {
+function Assets({ publicKey }: {
     publicKey: string
 }) {
     const [copied, setCopied] = useState(false);
     const { tokenBalances, loading } = useTokens(publicKey);
 
-    useEffect(()=> {
-        
-        
-        if (copied){
-            let timeout = setTimeout(()=> {
+    useEffect(() => {
+
+
+        if (copied) {
+            let timeout = setTimeout(() => {
                 setCopied(false)
             }, 3000)
             return () => {
@@ -87,7 +87,7 @@ function Assets({publicKey}: {
         <div className="mx-12 py-2">
             Account assets
         </div>
-        
+
         <div className="flex justify-between mx-12">
             <div className="flex">
                 <div className="text-5xl font-bold text-black">

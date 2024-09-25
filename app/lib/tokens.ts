@@ -6,7 +6,7 @@ export interface TokenDetails {
     image: string;
 
 }
-export const SUPPORTED_TOKENS: TokenDetails [] = [{
+export const SUPPORTED_TOKENS: TokenDetails[] = [{
     name: "SOL",
     mint: "So11111111111111111111111111111111111111112",
     native: true,
