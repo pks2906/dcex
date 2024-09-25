@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export const ProfileCard = ({publicKey}: {  
     publicKey: string
-}) => { 
+}) => {     
     const session = useSession(); 
     const router = useRouter();
 
@@ -87,4 +87,3 @@ function Greeting({
     </div>
 }
 
-//TODO - 2:26:31

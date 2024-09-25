@@ -6,13 +6,15 @@ let prices: {[key: string]: {
     price: string;
 }} = {};
 const TOKEN_PRICE_REFRESH_INTERVAL = 60 * 1000; //every 60
-export const SUPPORTED_TOKENS: {
-    name: string;
-    mint: string;
-    native: boolean;
-    price: string;
-    image: string;
-}[] = [{
+export interface TokenDetails {
+        name: string;
+        mint: string;
+        native: boolean;
+        price: string;
+        image: string;
+    
+}
+export const SUPPORTED_TOKENS: TokenDetails [] = [{
     name: "USDC",
     mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     native: false,
