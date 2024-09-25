@@ -2,16 +2,27 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { PrimaryButton } from "./Button";
+import { PrimaryButton, TabButton } from "./Button";
 import { useEffect, useState } from "react";
 import { useTokens } from "../api/hooks/useTokens";
 import { TokenList } from "./TokenList";
+import { Swap } from "./Swap";
+
+type Tab = "tokens" | "send" | "add_funds" | "swap" | "withdraw"
+const tabs: {id: Tab; name: string}[] = [
+    {id: "tokens", name: "Tokens"}, 
+    {id: "send", name: "Send"}, 
+    {id: "add_funds", name: "Add funds"},
+    {id: "withdraw", name: "Withdraw"},
+    {id: "swap", name: "Swap"},
+];
 
 export const ProfileCard = ({publicKey}: {  
     publicKey: string
 }) => {     
     const session = useSession(); 
     const router = useRouter();
+    const [selectedTab, setSelectedTab] = useState<Tab>("tokens");
 
     if (session.status === "loading") {
         //TODO: replace with a skeleton 
@@ -31,7 +42,15 @@ export const ProfileCard = ({publicKey}: {
                 image={session.data?.user?.image ?? ""} 
                 name={session.data?.user?.name ?? ""} 
              />
-             <Assets publicKey={publicKey}/>
+             <div className="w-full flex px-10">  
+                {tabs.map(tab => <TabButton active={tab.id === selectedTab}  onClick={() => {
+                    setSelectedTab(tab.id)
+                }}>{tab.name}</TabButton>)}
+             </div>
+
+
+             <div className={`${selectedTab ==="tokens" ? "visible" : "hidden"}`}><Assets publicKey={publicKey}/></div>
+             <div className={`${selectedTab ==="swap" ? "visible" : "hidden"}`}><Swap publicKey={publicKey}/></div>
 
 
         </div>
