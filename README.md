@@ -1,3 +1,47 @@
+## DCEX – Wallet as a Service
+
+### Introduction
+DCEX is a decentralized exchange (DEX) platform that offers **Wallet as a Service (WaaS)** to users. Unlike centralized exchanges (CEXs) that hold user assets in a single central wallet, DCEX provides each user with their own individual wallet. The primary objective is to simplify wallet creation and enable secure transactions while utilizing decentralized liquidity sources.
+
+### Key Features
+1. **Individual Wallets for Each User**: 
+   - Upon signing up, every user is automatically assigned a unique wallet. This structure ensures users maintain control over their assets, enhancing security and decentralization.
+
+2. **Decentralized Liquidity Sourcing**:
+   - DCEX leverages decentralized exchange protocols, such as **Jupiter on the Solana blockchain**, to source liquidity for user transactions. This approach provides greater flexibility and minimizes reliance on a centralized liquidity pool.
+
+3. **On-Ramp and Swapping**:
+   - Users can easily deposit funds into their wallets, which can be used for trading and asset swapping directly from their wallets. This seamless user experience allows for on-ramping (fiat-to-crypto conversion) and swapping between supported assets.
+
+### How It Works
+1. **Wallet Creation**: 
+   - When users sign up, DCEX generates a new wallet specific to each user, allowing for personalized control over assets.
+
+2. **Deposits and Trading (At this moment the user will not able to use this service as we don't have the licence yet)**: 
+   - Users deposit money into their wallets for trading purposes. The platform ensures secure storage and transaction management.
+
+3. **Swapping via Decentralized Liquidity**: 
+   - DCEX sources liquidity from decentralized exchanges, such as Jupiter, providing a wide range of trading pairs and competitive rates. This eliminates the need for maintaining an internal liquidity pool.
+
+### Benefits of DCEX
+- **Decentralization**: Users have full control over their individual wallets, reducing the risks associated with centralized exchanges.
+- **Security**: The platform enhances security by assigning a unique wallet to each user, minimizing exposure to hacks or breaches that commonly affect centralized exchanges.
+- **Flexibility**: Liquidity is sourced from decentralized exchanges, giving users access to a broader market and competitive pricing for trades.
+- **User-Friendly**: Wallet creation and management are handled seamlessly by DCEX, providing a smooth onboarding process for users.
+
+### Conclusion
+DCEX revolutionizes the exchange ecosystem by offering **Wallet as a Service**, empowering users with greater control over their assets while benefiting from decentralized liquidity. With its unique approach, DCEX is positioned to provide a secure, efficient, and decentralized trading experience for users across the globe.
+
+
+### TechStack
+1. Next JS
+2. TypeScript
+3. Solana
+4. Tailwind CSS
+5. Prisma
+6. OAuth
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
