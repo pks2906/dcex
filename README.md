@@ -1,4 +1,4 @@
-## Project Report: DCEX – Wallet as a Service
+## DCEX – Wallet as a Service
 
 ### Introduction
 DCEX is a decentralized exchange (DEX) platform that offers **Wallet as a Service (WaaS)** to users. Unlike centralized exchanges (CEXs) that hold user assets in a single central wallet, DCEX provides each user with their own individual wallet. The primary objective is to simplify wallet creation and enable secure transactions while utilizing decentralized liquidity sources.
