@@ -20,7 +20,7 @@ model User {
   name           String?
   profilePicture String?
   password       String?
-  solWalletId    String?
+  solWalletId    String? 
   solWallet      SolWallet?
   inrWalletId    String?
   inrWallet      InrWalet?
