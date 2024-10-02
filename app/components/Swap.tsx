@@ -1,8 +1,10 @@
 "use client"
 
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { SUPPORTED_TOKENS, TokenDetails } from "../lib/tokens"
 import { TokenwithBalance } from "../api/hooks/useTokens";
+import { PrimaryButton } from "./Button";
+import axios from "axios";
 
 export function Swap({ publicKey, tokenBalances }: {
     publicKey: string;
@@ -13,24 +15,44 @@ export function Swap({ publicKey, tokenBalances }: {
 }) {
     const [baseAsset, setBaseAsset] = useState(SUPPORTED_TOKENS[0])
     const [quoteAsset, setQuoteAsset] = useState(SUPPORTED_TOKENS[1])
-    const [baseAmount, setBaseAmount] = useState(0);
-    const [quoteAmount, setQuoteAmount] = useState(0);
+    const [baseAmount, setBaseAmount] = useState<string>();
+    const [quoteAmount, setQuoteAmount] = useState<string>();
+
+    // TODO: Use async useEffects that u can cancel
+    // Use Debouncing
+    useEffect(() => {
+        if(!baseAmount){
+            return;
+        }
+        axios.get(`https://quote-api.jup.ag/v6/quote?inputMint=${baseAsset.mint}& outputMint=${quoteAsset.mint}&amount=${Number(baseAmount) * baseAsset.decimals}&slippageBps=50`)
+
+    }, [baseAsset, quoteAsset, baseAmount])
 
 
-    return <div className="p-12">
+    return <div className="p-12 bg-slate-50">
         <div className="text-2xl font-bold pb-4">
             Swap Tokens
         </div>
-        <SwapInputRow onSelect={(asset) => {
-            setBaseAsset(asset)
-        }} selectedToken={baseAsset} title={"You pay:   "} topBorderEnabled={true} bottomBorderEnabled={false}
+        <SwapInputRow
+            amount={baseAmount}
+            onAmountChange={(value: string) => {
+                setBaseAmount(value);
+            }}
+            onSelect={(asset) => {
+                setBaseAsset(asset)
+            }}
+            selectedToken={baseAsset} title={"You pay:   "}
+            topBorderEnabled={true}
+            bottomBorderEnabled={false}
             subtitle={<div className="text-slate-500 pt-1 text-sm pl-1 flex">
                 <div className="font-normal pr-1">
                     Current Balance:
                 </div>
-                <div className="font-semibold">{tokenBalances?.tokens.find(x => x.name === baseAsset.name)?.balance} {baseAsset.name}
+                <div className="font-semibold">
+                    {tokenBalances?.tokens.find(x => x.name === baseAsset.name)?.balance} {baseAsset.name}
                 </div>
-            </div>} />
+            </div>}
+        />
         <div className="flex justify-center">
             <div onClick={() => {
                 let baseAssestTemp = baseAsset;
@@ -44,21 +66,29 @@ export function Swap({ publicKey, tokenBalances }: {
             </div>
         </div>
 
-        <SwapInputRow onSelect={(asset) => {
+        <SwapInputRow amount={quoteAmount} onSelect={(asset) => {
             setQuoteAsset(asset)
         }} selectedToken={quoteAsset} title={"You receive"} topBorderEnabled={false} bottomBorderEnabled={true} />
+
+        <div className="flex justify-end pt-4">
+            <PrimaryButton onClick={() => {
+                //trigger swap
+            }}>Swap</PrimaryButton>
+        </div>
 
 
     </div>
 }
 
-function SwapInputRow({ onSelect, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled }: {
+function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled }: {
     onSelect: (asset: TokenDetails) => void;
     selectedToken: TokenDetails;
     title: string;
     subtitle?: ReactNode;
     topBorderEnabled: boolean;
     bottomBorderEnabled: boolean;
+    amount?: string;
+    onAmountChange?: (value: string) => void;
 }) {
     return <div className={`border flex justify-between p-6 ${topBorderEnabled ? "rounded-t-xl" : ""} ${bottomBorderEnabled ?
         "rounded-b-xl" : ""} `}>
@@ -70,7 +100,9 @@ function SwapInputRow({ onSelect, selectedToken, title, subtitle, topBorderEnabl
             {subtitle}
         </div>
         <div>
-            <input placeholder="0" type="text" className="p-6 outline-none text-4xl" dir="rtl"></input>
+            <input onChange={(e) => {
+                onAmountChange?.(e.target.value);
+            }} placeholder="0" type="text" className="bg-slate-50 p-6 outline-none text-4xl" dir="rtl" value={amount}></input>
         </div>
     </div>
 }
@@ -103,4 +135,3 @@ function SwapIcon() {
     </svg>
 }
 
-//4:8:36
