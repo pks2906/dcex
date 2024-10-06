@@ -11,17 +11,17 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
     })
-  
+
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      if (account?.provider === "google"){
+      if (account?.provider === "google") {
         const email = user.email;
-        if(!email){
+        if (!email) {
           return false
         }
 
-        console.log({user, account, profile, email, credentials})
+        console.log({ user, account, profile, email, credentials })
         const userDb = await db.user.findFirst({
           where: {
             username: email
@@ -30,16 +30,16 @@ const handler = NextAuth({
 
         })
 
-        if (userDb){
+        if (userDb) {
           return true;
         }
 
         const keypair = Keypair.generate();
-        const publicKey = keypair.publicKey.toBase58(); 
+        const publicKey = keypair.publicKey.toBase58();
         const privateKey = keypair.secretKey;
-        
 
-       
+
+
         await db.user.create({
           data: {
             username: email,
@@ -65,14 +65,14 @@ const handler = NextAuth({
         return true;
 
       }
-      
+
       return false
     },
 
   }
 })
 
-export { handler as GET, handler as POST } 
+export { handler as GET, handler as POST }
 
 console.log({
   clientId: process.env.GOOGLE_CLIENT_ID ?? "",

@@ -5,40 +5,40 @@ import db from "@/app/db";
 import { authConfig } from "../lib/auth";
 
 
-async function getUserWallet(){
-    const session= await getServerSession(authConfig);
+async function getUserWallet() {
+    const session = await getServerSession(authConfig);
 
 
     const userWallet = await db.solWallet.findFirst({
-        where:{
+        where: {
             userId: session?.user?.uid
-        }, 
+        },
         select: {
             publicKey: true
         }
     })
-    if (!userWallet){
+    if (!userWallet) {
         return {
             error: "No solana wallet found associated to the user   "
         }
     }
 
-    return {error: null, userWallet};
+    return { error: null, userWallet };
 
 }
 
 
 
-export default async function() {
+export default async function () {
     const userWallet = await getUserWallet();
 
-    if (userWallet.error || !userWallet?.userWallet?.publicKey){
+    if (userWallet.error || !userWallet?.userWallet?.publicKey) {
         return <>No solana wallet found</>
 
     }
 
     return <div>
-        <ProfileCard publicKey = {userWallet.userWallet?.publicKey} />
+        <ProfileCard publicKey={userWallet.userWallet?.publicKey} />
     </div>
 
 }

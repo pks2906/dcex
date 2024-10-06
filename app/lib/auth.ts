@@ -6,10 +6,10 @@ import { Session } from 'next-auth';
 
 export interface session extends Session {
     user: {
-      email: string;
-      name: string;
-      image: string
-      uid: string;
+        email: string;
+        name: string;
+        image: string
+        uid: string;
     };
 }
 
@@ -25,8 +25,8 @@ export const authConfig = {
         session: ({ session, token }: any): session => {
             const newSession: session = session as session;
             if (newSession.user && token.uid) {
-              // @ts-ignore
-              newSession.user.uid = token.uid ?? "";
+                // @ts-ignore
+                newSession.user.uid = token.uid ?? "";
             }
             return newSession!;
         },
@@ -37,7 +37,7 @@ export const authConfig = {
                 }
             })
             if (user) {
-              token.uid = user.id
+                token.uid = user.id
             }
             return token
         },
@@ -87,7 +87,7 @@ export const authConfig = {
                 return true;
 
             }
-            
+
             return false
         },
     }
