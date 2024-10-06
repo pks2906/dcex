@@ -50,9 +50,9 @@ export const ProfileCard = ({ publicKey }: {
             </div>
 
 
-            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} 
-            loading={loading} publicKey={publicKey} /> </div>
-            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap tokenBalances={tokenBalances}  publicKey={publicKey} /></div>
+            <div className={`${selectedTab === "tokens" ? "visible" : "hidden"}`}><Assets tokenBalances={tokenBalances} loading={loading} publicKey={publicKey} /> </div>
+            <div className={`${selectedTab === "swap" ? "visible" : "hidden"}`}><Swap tokenBalances={tokenBalances} publicKey={publicKey} /></div>
+            <div className={`${(selectedTab !== "swap" && selectedTab !== "tokens") ? "visible" : "hidden"}`}><Warning /> </div>
 
 
         </div>
@@ -60,16 +60,22 @@ export const ProfileCard = ({ publicKey }: {
     </div>
 }
 
-function Assets({ publicKey, tokenBalances, loading}: {
+function Warning() {
+    return <div className="bg-slate-50 py-32 px-10 flex justify-center">
+        We don't yet support this feature
+    </div>
+}
+
+function Assets({ publicKey, tokenBalances, loading }: {
     publicKey: string;
     tokenBalances: {
         totalBalance: number,
         tokens: TokenwithBalance[]
     } | null;
-    loading: boolean;    
+    loading: boolean;
 }) {
     const [copied, setCopied] = useState(false);
-    
+
 
     useEffect(() => {
 

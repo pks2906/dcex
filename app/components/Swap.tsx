@@ -18,6 +18,7 @@ export function Swap({ publicKey, tokenBalances }: {
     const [baseAmount, setBaseAmount] = useState<string>();
     const [quoteAmount, setQuoteAmount] = useState<string>();
     const [fetchingQuote, setFetchingQuote] = useState(false);
+    const [quoteResponse, setQuoteResponse] = useState(null)
 
     // TODO: Use async useEffects that u can cancel
     // Use Debouncing
@@ -30,6 +31,7 @@ export function Swap({ publicKey, tokenBalances }: {
             .then(res => {
                 setQuoteAmount((Number(res.data.outAmount) / Number(10 ** quoteAsset.decimals)).toString())
                 setFetchingQuote(false);
+                setQuoteResponse(res.data);
             })
 
     }, [baseAsset, quoteAsset, baseAmount])
@@ -77,16 +79,25 @@ export function Swap({ publicKey, tokenBalances }: {
         }} selectedToken={quoteAsset} title={"You receive"} topBorderEnabled={false} bottomBorderEnabled={true} />
 
         <div className="flex justify-end pt-4">
-            <PrimaryButton onClick={() => {
+            <PrimaryButton onClick={async () => {
                 //trigger swap
+
+                try {
+                    const res = await axios.post("/api/swap", {
+                        quoteResponse
+                    })
+                    if (res.data.txnId) {
+                        alert("Swap done!")
+                    }
+                } catch (e) {
+                    alert("Error while sending a txn")
+                }
             }}>Swap</PrimaryButton>
         </div>
-
-
     </div>
 }
 
-function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled, inputDisabled, inputLoading}: {
+function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled, inputDisabled, inputLoading }: {
     onSelect: (asset: TokenDetails) => void;
     selectedToken: TokenDetails;
     title: string;
@@ -110,7 +121,7 @@ function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, 
         <div>
             <input disabled={inputDisabled} onChange={(e) => {
                 onAmountChange?.(e.target.value);
-            }} placeholder="0" type="text" className="bg-slate-50 p-6 outline-none text-4xl" dir="rtl" value={inputLoading ? "Loading " :amount}></input>
+            }} placeholder="0" type="text" className="bg-slate-50 p-6 outline-none text-4xl" dir="rtl" value={inputLoading ? "Loading " : amount}></input>
         </div>
     </div>
 }

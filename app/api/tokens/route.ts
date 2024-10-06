@@ -34,13 +34,14 @@ async function getAccountBalance(token: {
         console.log("balance is " + balance)
         return balance / LAMPORTS_PER_SOL;
     }
-    const ata = await getAssociatedTokenAddress(new PublicKey(token.mint),
-        new PublicKey(address));
+    const ata = await getAssociatedTokenAddress(new PublicKey(token.mint), new PublicKey(address));
+  
+
 
     try {
         const account = await getAccount(connection, ata);
         // const mint = await getMint(connection, new PublicKey(token.mint));
-        return Number(account.amount) / (10 ** decimals)
+        return Number(account.amount) / (10 ** token.decimals)
     } catch (e) {
         return 0;
     }
