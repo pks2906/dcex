@@ -17,14 +17,20 @@ export function Swap({ publicKey, tokenBalances }: {
     const [quoteAsset, setQuoteAsset] = useState(SUPPORTED_TOKENS[1])
     const [baseAmount, setBaseAmount] = useState<string>();
     const [quoteAmount, setQuoteAmount] = useState<string>();
+    const [fetchingQuote, setFetchingQuote] = useState(false);
 
     // TODO: Use async useEffects that u can cancel
     // Use Debouncing
     useEffect(() => {
-        if(!baseAmount){
+        if (!baseAmount) {
             return;
         }
-        axios.get(`https://quote-api.jup.ag/v6/quote?inputMint=${baseAsset.mint}& outputMint=${quoteAsset.mint}&amount=${Number(baseAmount) * baseAsset.decimals}&slippageBps=50`)
+        setFetchingQuote(true);
+        axios.get(`https://quote-api.jup.ag/v6/quote?inputMint=${baseAsset.mint}&outputMint=${quoteAsset.mint}&amount=${Number(baseAmount) * (10 ** baseAsset.decimals)}&slippageBps=50`)
+            .then(res => {
+                setQuoteAmount((Number(res.data.outAmount) / Number(10 ** quoteAsset.decimals)).toString())
+                setFetchingQuote(false);
+            })
 
     }, [baseAsset, quoteAsset, baseAmount])
 
@@ -66,7 +72,7 @@ export function Swap({ publicKey, tokenBalances }: {
             </div>
         </div>
 
-        <SwapInputRow amount={quoteAmount} onSelect={(asset) => {
+        <SwapInputRow inputLoading={fetchingQuote} inputDisabled={true} amount={quoteAmount} onSelect={(asset) => {
             setQuoteAsset(asset)
         }} selectedToken={quoteAsset} title={"You receive"} topBorderEnabled={false} bottomBorderEnabled={true} />
 
@@ -80,7 +86,7 @@ export function Swap({ publicKey, tokenBalances }: {
     </div>
 }
 
-function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled }: {
+function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, subtitle, topBorderEnabled, bottomBorderEnabled, inputDisabled, inputLoading}: {
     onSelect: (asset: TokenDetails) => void;
     selectedToken: TokenDetails;
     title: string;
@@ -89,6 +95,8 @@ function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, 
     bottomBorderEnabled: boolean;
     amount?: string;
     onAmountChange?: (value: string) => void;
+    inputDisabled?: boolean;
+    inputLoading?: boolean;
 }) {
     return <div className={`border flex justify-between p-6 ${topBorderEnabled ? "rounded-t-xl" : ""} ${bottomBorderEnabled ?
         "rounded-b-xl" : ""} `}>
@@ -100,9 +108,9 @@ function SwapInputRow({ onSelect, amount, onAmountChange, selectedToken, title, 
             {subtitle}
         </div>
         <div>
-            <input onChange={(e) => {
+            <input disabled={inputDisabled} onChange={(e) => {
                 onAmountChange?.(e.target.value);
-            }} placeholder="0" type="text" className="bg-slate-50 p-6 outline-none text-4xl" dir="rtl" value={amount}></input>
+            }} placeholder="0" type="text" className="bg-slate-50 p-6 outline-none text-4xl" dir="rtl" value={inputLoading ? "Loading " :amount}></input>
         </div>
     </div>
 }
