@@ -42,6 +42,17 @@ DCEX revolutionizes the exchange ecosystem by offering **Wallet as a Service**, 
 6. OAuth
 
 
+### Images
+
+![Screenshot from 2024-10-08 23-35-27](https://github.com/user-attachments/assets/09989f57-1217-4d73-b3a9-20d393c5c962)
+![Screenshot from 2024-10-08 23-35-44](https://github.com/user-attachments/assets/3ca070a3-7825-42ba-870f-f44aa993c05d)
+![Screenshot from 2024-10-08 23-35-56](https://github.com/user-attachments/assets/79d9cbc1-5db9-49d5-992d-caa9cfb1e34f)
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
