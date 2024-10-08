@@ -42,11 +42,17 @@ DCEX revolutionizes the exchange ecosystem by offering **Wallet as a Service**, 
 6. OAuth
 
 
-### Images
+### Live Images
 
 ![Screenshot from 2024-10-08 23-35-27](https://github.com/user-attachments/assets/09989f57-1217-4d73-b3a9-20d393c5c962)
 ![Screenshot from 2024-10-08 23-35-44](https://github.com/user-attachments/assets/3ca070a3-7825-42ba-870f-f44aa993c05d)
 ![Screenshot from 2024-10-08 23-35-56](https://github.com/user-attachments/assets/79d9cbc1-5db9-49d5-992d-caa9cfb1e34f)
+
+
+### There are some services that is not supported in an Indian Crypto Exchange
+
+![image](https://github.com/user-attachments/assets/e7800260-6375-4916-8289-f19b00c2b8bf)
+
 
 
 
